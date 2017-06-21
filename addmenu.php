@@ -63,6 +63,9 @@ if (isset($_POST['creer']))
     // associationPlatMenu(int $idplat,$idmenu)
     $menusManager->associationPlatMenu($idplat,$menuEnBase->getId());
 
+    //met a jour le prix du menu :
+    $menusManager->updatePrixMenu($menuEnBase->getId());
+    
   }
 }
 

@@ -124,5 +124,53 @@ class MenusManager {
 
    }
 
+   public function getPrixMenu(int $idmenu){
+
+     $q = $this->_db->query('SELECT SUM(PRIX) AS prix_total_menu FROM Plats INNER JOIN COMPOSER ON Plats.ID = COMPOSER.IDPLAT  WHERE IDMENU = '.$idmenu);
+
+    //test debug
+    //  $q->debugDumpParams();
+    //  $res = $q->fetch(PDO::FETCH_ASSOC);
+    //  $res = $q->fetchColumn();
+
+    // $res = $q->fetch(PDO::FETCH_NUM);
+      $res = $q->fetch();
+
+    // $res = $q;
+
+     var_dump($res);
+
+     return $res;
+
+   }
+
+   public function updatePrixMenu(int $id){
+
+    $newprix = $this->getPrixMenu($id);
+
+    var_dump($newprix['prix_total_menu']);
+
+    $p = $newprix['prix_total_menu'];
+    $p = (float) $p;
+
+
+    // $prix = $newprix['prix_total_menu'];
+    // $prix = (float) $prix;
+
+    //  $q = $this->_db->query('SELECT SUM(PRIX) FROM Plats INNER JOIN COMPOSER ON Plats.ID = COMPOSER.IDPLAT  WHERE IDPLAT = '.$id);
+    //
+    //  $res = $q->fetch(PDO::FETCH_ASSOC);
+
+     $r = $this->_db->prepare('UPDATE Menus SET PRIX = :prix WHERE ID = :id');
+     // Assignation des valeurs à la requête.
+     $r->bindValue(':id',$id);
+    //  $r->bindValue(':prix',$newprix);
+     $r->bindValue(':prix',$p);
+
+     // Exécution de la requête.
+     $r->execute();
+
+
+   }
 
 }
