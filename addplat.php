@@ -25,10 +25,9 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); // On émet une aler
 
 $platsManager = new PlatsManager($db);
 
-if (isset($_POST['creer'])) // Si on a voulu créer un personnage.
+if (isset($_POST['creer']))
 {
-  // il faudra traiter l insertion de l image ici.
-  //.... avec $plat
+  // insertion de l image en base de donnees.
   // On peut valider le fichier et le stocker définitivement
   $fileTMP    = $_FILES['image']['tmp_name'];
   $fileNAME = $_FILES['image']['name'];
@@ -36,7 +35,7 @@ if (isset($_POST['creer'])) // Si on a voulu créer un personnage.
   // tableau des extensions
   $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png', 'pdf');
 
-  if (isset($_FILES['image']) && $_FILES['image']['error'] == 0)
+  if(isset($_FILES['image']) && $_FILES['image']['error'] == 0)
   {
     // Testons si l'extension est autorisée
     $infosfichier = pathinfo($_FILES['image']['name']);
@@ -49,7 +48,7 @@ if (isset($_POST['creer'])) // Si on a voulu créer un personnage.
     }
   }
 
-
+  // On crée un nouveau plat.
   $plat = new Plat(['nom' => $_POST['nom'], 'prix' => $_POST['prix'], 'image' => $fileNAME]); // On crée un nouveau personnage.
 
 
@@ -69,7 +68,7 @@ if (isset($_POST['creer'])) // Si on a voulu créer un personnage.
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TP : Mini jeu de combat</title>
+    <title>TP : Restaurant Villa Plaza</title>
     <meta charset="utf-8" />
   </head>
   <body>

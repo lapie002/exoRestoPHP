@@ -1,5 +1,4 @@
 <?php
-// include_once 'connection.php';
 
 class PlatsManager {
 
@@ -18,16 +17,10 @@ class PlatsManager {
      public function add(Plat $plat)
      {
        // Préparation de la requête d'insertion.
-       // Assignation des valeurs pour le nom du personnage.
+       // Assignation des valeurs pour le plat.
        // Exécution de la requête.
 
-      //  $q = $this->_db->prepare('INSERT INTO PLATS(NOMPLAT,PRIXPLAT,IMAGE) VALUES(:nom,:prix,:image)');
-       //
-      //  $q->bindValue(':nom',$plat->getNom());
-      //  $q->bindValue(':prix',$plat->getPrix());
-      //  $q->bindValue(':image',$plat->getImage());
-
-      $q = $this->_db->prepare('INSERT INTO Plats(NOMPLAT,PRIXPLAT,IMAGE) VALUES(:nom,:prix,:image)');
+      $q = $this->_db->prepare('INSERT INTO Plats(NOM,PRIX,IMAGE) VALUES(:nom,:prix,:image)');
 
       $q->bindValue(':nom',$plat->getNom());
       $q->bindValue(':prix',$plat->getPrix());
@@ -39,16 +32,15 @@ class PlatsManager {
 
       $q->execute();
 
-    // $q = bindValue(':degats',$perso->_degats,PDO::PARAM_INT);
-   //  $q = bindValue(':degats',0);
+     // $q = bindValue(':degats',$perso->_degats,PDO::PARAM_INT);
+     //  $q = bindValue(':degats',0);
 
 
        // Hydratation du plat passé en paramètre avec assignation de son identifiant et du prix initial.
        $plat->hydrate(
          ['id'    => $this->_db->lastInsertId(),
          'nom'    => $plat->getNom(),
-         'prix'   => $plat->getPrix(),
-         'image'  => $plat->getImage()]
+         'prix'   => $plat->getPrix()]
        );
 
      }
@@ -65,7 +57,7 @@ class PlatsManager {
      public function delete(Plat $plat)
      {
        // Exécute une requête de type DELETE.
-      $this->_db->exec('DELETE FROM Plats WHERE IDPLAT = '.$plat->getId());
+      $this->_db->exec('DELETE FROM Plats WHERE ID = '.$plat->getId());
      }
 
      public function exists($info)
@@ -73,18 +65,19 @@ class PlatsManager {
        // Si le paramètre est un entier, c'est qu'on a fourni un identifiant.
        if(is_int($info)){
          // On exécute alors une requête COUNT() avec une clause WHERE, et on retourne un boolean.
-         return (bool) $this->_db->query('SELECT COUNT(*) FROM Plats WHERE id = '.$info)->fetchColumn();
+         return (bool) $this->_db->query('SELECT COUNT(*) FROM Plats WHERE ID = '.$info)->fetchColumn();
        }
        // Sinon c'est qu'on a passé un nom.
        else{
          // Exécution d'une requête COUNT() avec une clause WHERE, et retourne un boolean.
-         $q = $this->_db->prepare('SELECT COUNT(*) FROM Plats WHERE NOMPLAT = :nom');
+         $q = $this->_db->prepare('SELECT COUNT(*) FROM Plats WHERE NOM = :nom');
          $q->execute([':nom' => $info]);
 
          return (bool) $q->fetchColumn();
        }
      }
-     //
+
+
     //  public function get($info)
     //  {
     //    // Si le paramètre est un entier, on veut récupérer le personnage avec son identifiant.
@@ -129,7 +122,7 @@ class PlatsManager {
      public function update(Plat $plat)
      {
        // Prépare une requête de type UPDATE.
-       $q = $this->_db->prepare('UPDATE Plats SET NOMPLAT = :nom, PRIXPLAT = :prix, IMAGE = :image WHERE IDPLAT = :id');
+       $q = $this->_db->prepare('UPDATE Plats SET NOM = :nom, PRIX = :prix, IMAGE = :image WHERE IDPLAT = :id');
        // Assignation des valeurs à la requête.
        $q->bindValue(':nom',$plat->getNom());
        $q->bindValue(':prix',$plat->getPrix());
@@ -137,6 +130,36 @@ class PlatsManager {
 
        // Exécution de la requête.
        $q->execute();
+     }
+
+     public function getPLat($id){
+
+          $q = $this->_db->query('SELECT ID, NOM, PRIX, IMAGE FROM Plats WHERE id = '.$id);
+
+          $donnees = $q->fetch(PDO::FETCH_ASSOC);
+
+          return new Personnage($donnees);
+
+     }
+
+
+     public function selectAllPlats()
+     {
+        $plats = [];
+
+        $q = $this->_db->query('SELECT ID, NOM, IMAGE FROM Plats');
+
+        while ($donnees = $q->fetch(PDO::FETCH_ASSOC))
+        {
+          // var_dump($donnees);
+          $plats[] = new Plat($donnees);
+
+          // $plats[] = getPLat($donnees['IDPLAT']);
+
+        }
+
+        return $plats;
+
      }
 
 }
