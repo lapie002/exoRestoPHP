@@ -20,7 +20,7 @@ class MenusManager {
     // Assignation des valeurs pour le Menu.
     // Exécution de la requête.
 
-   $q = $this->_db->prepare('INSERT INTO Menus(NOMMENU,PRIXMENU) VALUES(:nom,:prix)');
+   $q = $this->_db->prepare('INSERT INTO Menus(NOM,PRIX) VALUES(:nom,:prix)');
 
    $q->bindValue(':nom',$menu->getNom());
    $q->bindValue(':prix',$menu->getPrix());
@@ -56,7 +56,7 @@ class MenusManager {
   public function delete(Menu $menu)
   {
     // Exécute une requête de type DELETE.
-   $this->_db->exec('DELETE FROM Menus WHERE IDMENU = '.$menu->getId());
+   $this->_db->exec('DELETE FROM Menus WHERE ID = '.$menu->getId());
   }
 
   public function exists($info)
@@ -64,12 +64,12 @@ class MenusManager {
     // Si le paramètre est un entier, c'est qu'on a fourni un identifiant.
     if(is_int($info)){
       // On exécute alors une requête COUNT() avec une clause WHERE, et on retourne un boolean.
-      return (bool) $this->_db->query('SELECT COUNT(*) FROM Menus WHERE IDMENU = '.$info)->fetchColumn();
+      return (bool) $this->_db->query('SELECT COUNT(*) FROM Menus WHERE ID = '.$info)->fetchColumn();
     }
     // Sinon c'est qu'on a passé un nom.
     else{
       // Exécution d'une requête COUNT() avec une clause WHERE, et retourne un boolean.
-      $q = $this->_db->prepare('SELECT COUNT(*) FROM Menus WHERE NOMMENU = :nom');
+      $q = $this->_db->prepare('SELECT COUNT(*) FROM Menus WHERE NOM = :nom');
       $q->execute([':nom' => $info]);
 
       return (bool) $q->fetchColumn();
@@ -79,7 +79,7 @@ class MenusManager {
   public function update(Menu $menu)
   {
     // Prépare une requête de type UPDATE.
-    $q = $this->_db->prepare('UPDATE Menus SET NOMMENU = :nom, PRIXMENU = :prix WHERE IDMENU = :id');
+    $q = $this->_db->prepare('UPDATE Menus SET NOM = :nom, PRIX = :prix WHERE IDMENU = :id');
     // Assignation des valeurs à la requête.
     $q->bindValue(':nom',$menu->getNom());
     $q->bindValue(':prix',$menu->getPrix());
@@ -87,5 +87,42 @@ class MenusManager {
     // Exécution de la requête.
     $q->execute();
   }
+
+
+   public function getMenu($info)
+   {
+     // Si le paramètre est un entier, on veut récupérer le menu avec son identifiant.
+       // Exécute une requête de type SELECT avec une clause WHERE, et retourne un objet Menu.
+       if(is_int($info)){
+         $q = $this->_db->query('SELECT ID, NOM, PRIX FROM Menus WHERE ID = '.$info);
+
+         $donnees = $q->fetch(PDO::FETCH_ASSOC);
+
+         return new Menu($donnees);
+       }
+     // Sinon, on veut récupérer le personnage avec son nom.
+     // Exécute une requête de type SELECT avec une clause WHERE, et retourne un objet Personnage.
+     else {
+         $q = $this->_db->prepare('SELECT ID, NOM, PRIX FROM Menus WHERE NOM = :nom');
+         $q->execute([':nom' => $info]);
+
+         $donnees = $q->fetch(PDO::FETCH_ASSOC);
+
+         return new Menu($donnees);
+     }
+   }
+
+
+   public function associationPlatMenu(int $idplat,int $idmenu){
+
+     $q = $this->_db->prepare('INSERT INTO COMPOSER(IDPLAT,IDMENU) VALUES(:idplat,:idmenu)');
+
+     $q->bindValue(':idplat',$idplat);
+     $q->bindValue(':idmenu',$idmenu);
+
+     $q->execute();
+
+   }
+
 
 }

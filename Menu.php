@@ -75,10 +75,8 @@ class Menu
      $prix = (float) $prix;
 
      // On vérifie que l id superieur à zero
-     if($prix > 0.0)
-     {
-       $this->_prix = $prix;
-     }
+     $this->_prix = $prix;
+
   }
 
 
@@ -100,3 +98,4 @@ class Menu
     # retourne le prix de l'objet en question
     return $this->_prix;
    }
+}

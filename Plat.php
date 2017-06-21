@@ -3,10 +3,10 @@
 class Plat
 {
 
-  public $id;
-  public $nom;
-  public $prix;
-  public $image;
+  private $_id;
+  private $_nom;
+  private $_prix;
+  private $_image;
 
   /* fonction hydratation des donnees provenant de la BDD */
   public function hydrate(array $donnees)
@@ -39,7 +39,7 @@ class Plat
       // On vérifie que l id superieur à zero
       if ($id > 0)
       {
-        $this->id = $id;
+        $this->_id = $id;
       }
    }
 
@@ -48,21 +48,21 @@ class Plat
     # on affecte le nom a l'objet si $nom est une chaine de caracteres
     if(is_string($nom))
     {
-      $this->nom = $nom;
+      $this->_nom = $nom;
     }
    }
 
    public function setPrix($prix)
    {
-      // # on pasre la valeur du prix en Float
-      // $prix = (float) $prix;
-      // // On vérifie que l id superieur à zero
-      // if ($prix > 0.0)
-      // {
-      //   $this->_prix = $prix;
-      // }
+      # on pasre la valeur du prix en Float
+      $prix = (float) $prix;
+      // On vérifie que l id superieur à zero
+      if ($prix > 0.0)
+      {
+        $this->_prix = $prix;
+      }
 
-      $this->prix = $prix;
+      // $this->_prix = $prix;
    }
 
    public function setImage($image)
@@ -70,7 +70,7 @@ class Plat
     # on affecte le nom a l'objet si $nom est une chaine de caracteres
     if(is_string($image))
     {
-      $this->image = $image;
+      $this->_image = $image;
     }
    }
 
@@ -78,24 +78,24 @@ class Plat
    public function getId()
    {
     # retourne l'id de l'objet en question
-    return $this->id;
+    return $this->_id;
    }
 
    public function getNom()
    {
     # retourne le nom de l'objet en question
-    return $this->nom;
+    return $this->_nom;
    }
 
    public function getPrix()
    {
     # retourne le prix de l'objet en question
-    return $this->prix;
+    return $this->_prix;
    }
 
    public function getImage()
    {
     # retourne l'image de l'objet en question
-    return $this->image;
+    return $this->_image;
    }
 }

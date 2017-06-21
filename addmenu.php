@@ -31,8 +31,19 @@ $platsManager = new PlatsManager($db);
 
 if (isset($_POST['creer']))
 {
+  //les variable recuperer apres l envoie du formulaire:
+  $nom = $_POST['nom'];
+  // $prix = $_POST['prix'];
+  $prix = 0.00;
+  $idplat = $_POST['idplat'];
+  $idplat = (int) $idplat;
+
+  //TEST
+  // echo "nom du menu : " . $nom . " prix : " . $prix . " idplat : " . $idplat ."\n";
+
   // On crée un nouveau menu.
-  $menu = new Menu(['nom' => $_POST['nom'], 'prix' => $_POST['prix']]);
+  // $menu = new Menu(['nom' => $_POST['nom'], 'prix' => $_POST['prix']]);
+  $menu = new Menu(['nom' => $_POST['nom'], 'prix' => $prix]);
 
 
   if ($menusManager->exists($menu->getNom()))
@@ -42,7 +53,16 @@ if (isset($_POST['creer']))
   }
   else
   {
+    //on ajoute le menu
     $menusManager->add($menu);
+
+    //appel d un fonction pour recup le menu inserer en base :
+    // $menuEnBase = getMenu($menu->getNom());
+    $menuEnBase = $menusManager->getMenu($nom);
+
+    // associationPlatMenu(int $idplat,$idmenu)
+    $menusManager->associationPlatMenu($idplat,$menuEnBase->getId());
+
   }
 }
 
@@ -64,7 +84,7 @@ if (isset($_POST['creer']))
   <p>
     <select name="idplat">
       <?php
-      
+
         $objPlats = $platsManager->selectAllPlats();
 
         // var_dump($objPlats);
