@@ -27,10 +27,30 @@ $platsManager = new PlatsManager($db);
 
 if (isset($_POST['creer'])) // Si on a voulu créer un personnage.
 {
-  $plat = new Plat(['nom' => $_POST['nom'], 'prix' => $_POST['prix']]); // On crée un nouveau personnage.
-
   // il faudra traiter l insertion de l image ici.
   //.... avec $plat
+  // On peut valider le fichier et le stocker définitivement
+  $fileTMP    = $_FILES['image']['tmp_name'];
+  $fileNAME = $_FILES['image']['name'];
+  $fileTYPE = $_FILES['image']['type'];
+  // tableau des extensions
+  $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png', 'pdf');
+
+  if (isset($_FILES['image']) && $_FILES['image']['error'] == 0)
+  {
+    // Testons si l'extension est autorisée
+    $infosfichier = pathinfo($_FILES['image']['name']);
+    $extension_upload = $infosfichier['extension'];
+
+    if (in_array($extension_upload, $extensions_autorisees))
+    {
+      //echo $file;
+      move_uploaded_file($fileTMP, 'uploads/' . $fileNAME);
+    }
+  }
+
+
+  $plat = new Plat(['nom' => $_POST['nom'], 'prix' => $_POST['prix'], 'image' => $fileNAME]); // On crée un nouveau personnage.
 
 
   if ($platsManager->exists($plat->getNom()))
@@ -63,7 +83,7 @@ if (isset($_POST['creer'])) // Si on a voulu créer un personnage.
     Prix : <input type="text" name="prix" />
   </p>
   <p>
-    Image : <input type="file" name="image" id="fileToUpload">
+    Image : <input type="file" class="filestyle" name="image" id="fileToUpload" data-buttonText="Choisir">
   </p>
   <p>
     <input type="submit" value="Créer un plat" name="creer" />

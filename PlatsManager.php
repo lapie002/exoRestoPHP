@@ -31,7 +31,7 @@ class PlatsManager {
 
       $q->bindValue(':nom',$plat->getNom());
       $q->bindValue(':prix',$plat->getPrix());
-      $q->bindValue(':image','test.jpg');
+      $q->bindValue(':image',$plat->getImage());
 
       //$q->bindValue(':nom',$plat->getNom(),PDO::PARAM_STR);
       // $q->bindValue(':prix',0.0);
