@@ -54,7 +54,7 @@ if (isset($_POST['creer']))
 
   if ($platsManager->exists($plat->getNom()))
   {
-    $message = 'Le nom du personnage est déjà pris.';
+    $message = 'Le nom du plat est déjà pris.';
     unset($plat);
   }
   else
