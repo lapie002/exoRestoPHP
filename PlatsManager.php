@@ -122,8 +122,9 @@ class PlatsManager {
      public function update(Plat $plat)
      {
        // Prépare une requête de type UPDATE.
-       $q = $this->_db->prepare('UPDATE Plats SET NOM = :nom, PRIX = :prix, IMAGE = :image WHERE IDPLAT = :id');
+       $q = $this->_db->prepare('UPDATE Plats SET NOM = :nom, PRIX = :prix, IMAGE = :image WHERE ID = :id');
        // Assignation des valeurs à la requête.
+       $q->bindValue(':id',$plat->getId());
        $q->bindValue(':nom',$plat->getNom());
        $q->bindValue(':prix',$plat->getPrix());
        $q->bindValue(':image',$plat->getImage());
@@ -138,7 +139,7 @@ class PlatsManager {
 
           $donnees = $q->fetch(PDO::FETCH_ASSOC);
 
-          return new Personnage($donnees);
+          return new Plat($donnees);
 
      }
 
@@ -162,6 +163,6 @@ class PlatsManager {
 
      }
 
-     
+
 
 }

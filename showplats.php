@@ -56,8 +56,8 @@ $platsManager = new PlatsManager($db);
               {
                 foreach ($plats as $unPlat)
                 {
-                  // , $unPlat->getImage(), ')<br />';
-                  echo '<a href="?updatePlat=', $unPlat->getId(), '">', htmlspecialchars($unPlat->getNom()), '</a> (image du plat : <img src="uploads/', $unPlat->getImage(), '" alt="', $unPlat->getNom() ,'" style="width:32px;height:32px;" />)<br />';
+                  // www.befunky.com pour la retouche des images des plats
+                  echo '<a href="updateplat.php?updatePlat=', $unPlat->getId(), '">', htmlspecialchars($unPlat->getNom()), '</a> image du plat : <img src="uploads/', $unPlat->getImage(), '" alt="', $unPlat->getNom() ,'" style="width:32px;height:32px;" /><br />';
                 }
               }
         ?>
