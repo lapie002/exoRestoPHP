@@ -62,7 +62,6 @@ class Plat
         $this->_prix = $prix;
       }
 
-      // $this->_prix = $prix;
    }
 
    public function setImage($image)

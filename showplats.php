@@ -24,6 +24,7 @@ $db = Db::getInstance();
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); // On émet une alerte à chaque fois qu'une requête a échoué.
 
 $platsManager = new PlatsManager($db);
+
 ?>
 
 <!DOCTYPE html>
@@ -45,9 +46,10 @@ $platsManager = new PlatsManager($db);
           <legend>Les Plats </legend>
           <p>
           <?php
+
               $plats = $platsManager->selectAllPlats();
 
-              if (empty($plats))
+              if(empty($plats))
               {
                 echo 'Pas de Plats !';
               }
@@ -57,7 +59,7 @@ $platsManager = new PlatsManager($db);
                 foreach ($plats as $unPlat)
                 {
                   // www.befunky.com pour la retouche des images des plats
-                  echo '<a href="updateplat.php?updatePlat=', $unPlat->getId(), '">', htmlspecialchars($unPlat->getNom()), '</a> image du plat : <img src="uploads/', $unPlat->getImage(), '" alt="', $unPlat->getNom() ,'" style="width:32px;height:32px;" /><br />';
+                  echo '<a href="updateplat.php?updatePlatId=', $unPlat->getId(), '">', htmlspecialchars($unPlat->getNom()), '</a> Prix du plat : ',htmlspecialchars($unPlat->getPrix()),' image du plat : <img src="uploads/', $unPlat->getImage(), '" alt="', $unPlat->getNom() ,'" style="width:32px;height:32px;" /><br />';
                 }
               }
         ?>

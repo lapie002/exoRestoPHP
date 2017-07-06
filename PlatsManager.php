@@ -133,6 +133,19 @@ class PlatsManager {
        $q->execute();
      }
 
+     public function updateSansImage(Plat $plat)
+     {
+       // Prépare une requête de type UPDATE.
+       $q = $this->_db->prepare('UPDATE Plats SET NOM = :nom, PRIX = :prix WHERE ID = :id');
+       // Assignation des valeurs à la requête.
+       $q->bindValue(':id',$plat->getId());
+       $q->bindValue(':nom',$plat->getNom());
+       $q->bindValue(':prix',$plat->getPrix());
+
+       // Exécution de la requête.
+       $q->execute();
+     }
+
      public function getPLat($id){
 
           $q = $this->_db->query('SELECT ID, NOM, PRIX, IMAGE FROM Plats WHERE id = '.$id);
@@ -148,7 +161,7 @@ class PlatsManager {
      {
         $plats = [];
 
-        $q = $this->_db->query('SELECT ID, NOM, IMAGE FROM Plats');
+        $q = $this->_db->query('SELECT ID, NOM, PRIX, IMAGE FROM Plats');
 
         while ($donnees = $q->fetch(PDO::FETCH_ASSOC))
         {
